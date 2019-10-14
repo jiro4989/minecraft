@@ -44,7 +44,7 @@ metrics:
   - type: counter
     name: logout_count
     help: count logout user in minecraft.log.
-    match: '\[%{TIME}\]\s+\[[^]]+\]:\s+%{USER:user}\s+%{GREEDYDATA:msg}'
+    match: '\[%{TIME}\]\s+\[[^]]+\]:\s+%{USER:user}\s+left the game'
     labels:
       info_message: '{{.user}} {{.msg}}'
     retention: 1m
