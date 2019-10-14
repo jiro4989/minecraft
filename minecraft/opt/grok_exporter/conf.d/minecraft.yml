@@ -1,0 +1,39 @@
+global:
+  config_version: 2
+input:
+  # ファイルから読む設定。 stdin も可能。
+  type: file
+  # 読み込むログのパス。1つしか定義できない。複数は別 exporter に分ける
+  path: /var/log/minecraft/minecraft.log
+  # 読み込みのタイミングで毎回全部読むか追加部分だけ読むかの設定。 
+  # false で追加部分を tail してくれる。
+  readall: false
+grok:
+  # ログパース用の正規表現の塊があるところ。デフォルトで結構ある。
+  patterns_dir: ./patterns
+  # とくに今回だけ定義したい変数。
+  # 共通変数は patterns dir のほうに入れる。
+  additional_patterns:
+  - 'DATETIME 20%{YEAR}-%{MONTHNUM}-%{MONTHDAY} %{HOUR}:?%{MINUTE}(?::?%{SECOND}),[0-9]+'
+  - 'CLASS [^\s]+'
+  - 'MESSAGE .*'
+metrics:
+  # grok_exporter が行う加工処理。
+  # 詳細は上述の README を参照。
+  # counterは回数のカウント。
+  - type: counter
+    name: error_message
+    help: count error messages in minecraft.log.
+    # 正規表現の本丸です
+    #match: '%{DATETIME:datetime}\s+\[%{IP}\]\[.*\]\[%{NUMBER}\]\[.*\]\[.*\]\s+URL=%{URI:uri}\s+%{ERROR_MESSAGE:msg}.*%{ERROR_SRC_PATH:path}'
+    match: '%{DATETIME:datetime}\s+%{CLASS:class}\sERROR\s%{MESSAGE:msg}'
+    labels: error
+    # ここがメトリクスとして出力する値です。
+    # 実際 prometheus が読み込みます。
+    error_message: '{{.class}} {{.msg}}'
+    # この時間でcounterがクリアされます。
+    retention: 1m
+server:
+  # grok_exporter を立ち上げるポート。
+  # 複数のログを読むときはここを変更して別プロセスで立てる。
+  port: 9200
