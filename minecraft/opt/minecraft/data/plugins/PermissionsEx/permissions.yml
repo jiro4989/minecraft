@@ -1,0 +1,18 @@
+schema-version: 1
+groups:
+  default:
+    options:
+      default: true
+    permissions:
+    - modifyworld.*
+  admin:
+    options:
+      default: false
+    permissions:
+    - '*'
+users:
+  b0bf7c15-54ad-427c-8ab1-59028b078224:
+    group:
+    - admin
+    options:
+      name: saburomaru

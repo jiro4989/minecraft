@@ -1,0 +1,12 @@
+__pycache__
+log/**/*.log
+minecraft/opt/minecraft/data/*.yml
+minecraft/opt/minecraft/data/*.json
+minecraft/opt/minecraft/data/logs/
+minecraft/opt/minecraft/data/world*/
+minecraft/opt/minecraft/data/plugins/*
+!minecraft/opt/minecraft/data/plugins/PermissionsEx
+!minecraft/opt/minecraft/data/eula.txt
+minecraft/opt/minecraft/bin/*
+!minecraft/opt/minecraft/bin/.gitkeep
+grafonnet-lib

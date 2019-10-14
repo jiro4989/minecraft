@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  spigot_builder:
+    build:
+      context: .
+      dockerfile: ./spigot/Dockerfile
+    image: spigot_builder
+    container_name: spigot_builder
+    volumes:
+      - "./spigot/entrypoint.sh:/entrypoint.sh"
+      - "./minecraft/opt/minecraft/bin:/opt/minecraft/bin"
+    entrypoint:
+      - /entrypoint.sh
+
+  grafana_dashboard_builder:
+    image: sparkprime/jsonnet
+    container_name: grafana_dashboard_builder
+    volumes:
+      - "./grafana_dashboard:/work"
+    entrypoint:
+      - /work/entrypoint.sh
