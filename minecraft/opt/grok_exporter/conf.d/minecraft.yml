@@ -27,10 +27,10 @@ metrics:
     # 正規表現の本丸です
     #match: '%{DATETIME:datetime}\s+\[%{IP}\]\[.*\]\[%{NUMBER}\]\[.*\]\[.*\]\s+URL=%{URI:uri}\s+%{ERROR_MESSAGE:msg}.*%{ERROR_SRC_PATH:path}'
     match: '%{DATETIME:datetime}\s+%{CLASS:class}\sERROR\s%{MESSAGE:msg}'
-    labels: error
-    # ここがメトリクスとして出力する値です。
-    # 実際 prometheus が読み込みます。
-    error_message: '{{.class}} {{.msg}}'
+    labels:
+      # ここがメトリクスとして出力する値です。
+      # 実際 prometheus が読み込みます。
+      error_message: '{{.class}} {{.msg}}'
     # この時間でcounterがクリアされます。
     retention: 1m
 server:
