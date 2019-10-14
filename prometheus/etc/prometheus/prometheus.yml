@@ -7,3 +7,4 @@ scrape_configs:
       - targets:
         - 'localhost:9090'
         - 'minecraft:9100'
+        - 'minecraft:9200'
