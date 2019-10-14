@@ -15,6 +15,8 @@ grok:
   # 共通変数は patterns dir のほうに入れる。
   additional_patterns:
   - 'DATETIME 20%{YEAR}-%{MONTHNUM}-%{MONTHDAY} %{HOUR}:?%{MINUTE}(?::?%{SECOND}),[0-9]+'
+  - 'SIMPLETIME %{HOUR}:%{MINUTE}:${SECOND}'
+  - 'USER [^\]]+'
   - 'CLASS [^\s]+'
   - 'MESSAGE .*'
 metrics:
@@ -32,6 +34,13 @@ metrics:
       # 実際 prometheus が読み込みます。
       error_message: '{{.class}} {{.msg}}'
     # この時間でcounterがクリアされます。
+    retention: 1m
+  - type: counter
+    name: login_info
+    help: count login user in minecraft.log.
+    match: '\[%{SIMPLETIME:time}\]\s+\[Server thread/INFO\]:\s+%{USER:user}\[%{IP:ip}:[0-9]+\]\s+%{MESSAGE:msg}'
+    labels:
+      info_message: '{{.user}} {{.msg}}'
     retention: 1m
 server:
   # grok_exporter を立ち上げるポート。
