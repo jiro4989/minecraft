@@ -15,6 +15,7 @@ grok:
   # 共通変数は patterns dir のほうに入れる。
   additional_patterns:
   - 'DATETIME 20%{YEAR}-%{MONTHNUM}-%{MONTHDAY} %{HOUR}:?%{MINUTE}(?::?%{SECOND}),[0-9]+'
+  - 'TIME %{HOUR}:%{MINUTE}:%{SECOND}'
   - 'CLASS [^\s]+'
   - 'MESSAGE .*'
 metrics:
@@ -34,11 +35,18 @@ metrics:
     # この時間でcounterがクリアされます。
     retention: 1m
   - type: counter
-    name: login_info
+    name: login_count
     help: count login user in minecraft.log.
-    match: '\[%{HOUR}:%{MINUTE}:%{SECOND}\]\s+\[[^]]+\]:\s+%{USER:user}\[/%{IP:ip}:%{NUMBER}\] logged in with entity id %{NUMBER:entityID} at \(%{DATA:world}\)'
+    match: '\[%{TIME}\]\s+\[[^]]+\]:\s+%{USER:user}\[/%{IP:ip}:%{NUMBER}\] logged in with entity id %{NUMBER:entityID} at \(%{DATA:world}\)'
     labels:
       info_message: '{{.ip}} {{.user}} {{.entityID}} {{.world}}'
+    retention: 1m
+  - type: counter
+    name: logout_count
+    help: count logout user in minecraft.log.
+    match: '\[%{TIME}\]\s+\[[^]]+\]:\s+%{USER:user}\s+%{GREEDYDATA:msg}'
+    labels:
+      info_message: '{{.user}} {{.msg}}'
     retention: 1m
 server:
   # grok_exporter を立ち上げるポート。
