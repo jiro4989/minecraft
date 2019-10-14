@@ -1,0 +1,56 @@
+= minecraft
+
+DockerコンテナでMinecraftサーバを起動する。
+
+== 前提条件
+
+以下のツールをインストール
+
+* docker
+* docker-compose
+
+== Minecraftクライアントのインストール
+
+[source,bash]
+----
+yay -S minecraft-launcher
+----
+
+== アプリ起動方法
+
+[source,bash]
+----
+make spigot
+make up
+----
+
+== 監視系の確認
+
+以下のURLにアクセス。
+
+* http://localhost:3000[Grafana]
+* http://localhost:9090[Prometheus]
+
+== 起動したMinecraftマルチサーバに接続
+
+`minecraft-launcher` コマンドでクライアントを起動する。
+
+サーバアドレスに以下を入力する。
+
+* localhost:25565
+
+== grafana dashboardの生成
+
+grafanaのダッシュボードの生成にgrahonnetを使う。
+
+[source,bash]
+----
+make setup
+make dashboard
+----
+
+== 監視項目
+
+node_exporter + prometheus + grafanaで監視する項目は以下。
+
+TODO
