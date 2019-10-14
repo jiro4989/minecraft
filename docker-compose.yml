@@ -14,9 +14,12 @@ services:
     volumes:
       - "./minecraft/opt/minecraft/bin:/opt/minecraft/bin"
       - "./minecraft/opt/minecraft/data:/opt/minecraft/data"
+      - "./minecraft/opt/grok_exporter/conf.d:/opt/grok_exporter/conf.d"
+      - "./minecraft/opt/grok_exporter/patterns:/opt/grok_exporter/patterns"
       - "./minecraft/etc/supervisor/conf.d:/etc/supervisor/conf.d"
       - "./log/minecraft/minecraft:/var/log/minecraft"
       - "./log/minecraft/node_exporter:/var/log/node_exporter"
+      - "./log/minecraft/grok_exporter:/var/log/grok_exporter"
       - "./log/minecraft/supervisor:/var/log/supervisor"
     environment:
       EULA: "true"
